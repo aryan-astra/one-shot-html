@@ -7,7 +7,7 @@ from shutil import copyfile
 
 
 ROOT = Path(__file__).resolve().parents[2]
-COVER = Path('assets/readme-html-foldout.png')
+SITE_ASSETS = ('readme-html-foldout.png', 'favicon.png')
 PAPER_NAME = re.compile(
     r'(sem|ct)-(\d{4})-([a-z0-9]+)-([a-z0-9]+(?:-[a-z0-9]+)*)\.html',
     re.IGNORECASE | re.ASCII,
@@ -43,8 +43,9 @@ def build(output):
     index = replace_contents(index, '<noscript>', '</noscript>', fallback)
 
     output.mkdir(parents=True)
-    (output / COVER.parent).mkdir()
-    copyfile(ROOT / COVER, output / COVER)
+    (output / 'assets').mkdir()
+    for name in SITE_ASSETS:
+        copyfile(ROOT / 'assets' / name, output / 'assets' / name)
     for paper in papers:
         copyfile(paper, output / paper.name)
     (output / 'index.html').write_text(index, encoding='utf-8')
