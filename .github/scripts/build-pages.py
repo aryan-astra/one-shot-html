@@ -8,8 +8,10 @@ from shutil import copyfile
 
 ROOT = Path(__file__).resolve().parents[2]
 SITE_ASSETS = ('readme-html-foldout.png', 'favicon.png')
+CATALOG_TAG = '<script type="application/json" id="catalog-files">'
+VERSION_LABELS = {'simplified': 'Simplified', 'detailed': 'Detailed', None: 'Open analysis'}
 PAPER_NAME = re.compile(
-    r'(sem|ct)-(\d{4})-([a-z0-9]+)-([a-z0-9]+(?:-[a-z0-9]+)*)\.html',
+    r'(sem|ct)-(\d{4})-([a-z0-9]+)-([a-z0-9]+(?:-[a-z0-9]+)*)(?:--(simplified|detailed))?\.html',
     re.IGNORECASE | re.ASCII,
 )
 
@@ -21,24 +23,41 @@ def replace_contents(document, opening, closing, contents):
 
 
 def build(output):
+    index = (ROOT / 'index.html').read_text(encoding='utf-8')
+    credits = json.loads(index.split(CATALOG_TAG, 1)[1].split('</script>', 1)[0])
     papers = []
-    fallback_links = []
+    courses = {}
     for path in sorted(ROOT.iterdir()):
         match = PAPER_NAME.fullmatch(path.name)
         if not match or not path.is_file() or path.is_symlink():
             continue
-        exam, year, code, slug = match.groups()
-        title = slug.replace('-', ' ').title()
-        label = escape(f'{title} ({code.upper()}) · {exam.upper()} {year}')
+        exam, year, code, slug, version = match.groups()
+        key = (exam.upper(), year, code.upper())
+        title = slug.replace('-', ' ').title().replace(' And ', ' and ')
+        _, files = courses.setdefault(key, (title, []))
+        files.append((path.name, version.lower() if version else None))
         papers.append(path)
-        fallback_links.append(f'<li><a href="{escape(path.name)}">{label}</a></li>')
 
-    catalog = json.dumps([path.name for path in papers], indent=2)
-    index = (ROOT / 'index.html').read_text(encoding='utf-8')
-    index = replace_contents(
-        index, '<script type="application/json" id="catalog-files">', '</script>',
-        f'\n{catalog}\n  ',
-    )
+    def fallback_link(filename, label):
+        author = credits.get(filename)
+        credit = f' · @{escape(author)}' if author else ''
+        return f'<li><a href="{escape(filename)}">{escape(label)}</a>{credit}</li>'
+
+    fallback_links = []
+    version_order = list(VERSION_LABELS)
+    for (exam, year, code), (title, files) in courses.items():
+        label = f'{title} ({code}) · {exam} {year}'
+        if len(files) == 1 and files[0][1] is None:
+            fallback_links.append(fallback_link(files[0][0], label))
+        else:
+            links = ''.join(
+                fallback_link(filename, VERSION_LABELS[version])
+                for filename, version in sorted(files, key=lambda record: version_order.index(record[1]))
+            )
+            fallback_links.append(f'<li>{escape(label)}<ul>{links}</ul></li>')
+
+    catalog = json.dumps({path.name: credits.get(path.name) for path in papers}, indent=2)
+    index = replace_contents(index, CATALOG_TAG, '</script>', f'\n{catalog}\n  ')
     fallback = f'<ul>{"".join(fallback_links)}</ul>' if papers else '<p>No analyses published yet.</p>'
     index = replace_contents(index, '<noscript>', '</noscript>', fallback)
 
