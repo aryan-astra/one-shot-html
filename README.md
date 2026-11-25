@@ -18,7 +18,7 @@ Open a pull request with your self-contained `.html` files at the top level of t
 | Semester exam | `sem-YYYY-COURSECODE-course-name.html` |
 | Cycle test | `ct-YYYY-COURSECODE-course-name.html` |
 
-For two versions of the same analysis, add `--simplified` and `--detailed` before `.html`. If the filename is already taken by someone else's analysis, use a distinct course-name slug and keep the course code, exam type, and year the same so the library groups them together.
+For two versions of the same analysis, use the same course-name slug and add `--simplified` and `--detailed` before `.html` to show them on one card. If the filename is already taken by someone else's analysis, use a distinct course-name slug and keep the course code, exam type, and year the same so both cards show the same course title.
 
 Add each filename and the author's GitHub username to the `catalog-files` data in `index.html` to display a credit badge.
 

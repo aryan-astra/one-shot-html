@@ -182,14 +182,14 @@
     .year-control option { background: var(--surface); color: var(--text); }
 
     .results { margin: 0; padding: 0; list-style: none; }
-    .analysis {
+    .analysis { border-bottom: 1px solid var(--line); }
+    .analysis-heading {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
       gap: 0.75rem;
-      min-height: 4.5rem;
+      min-height: calc(4.5rem - 1px);
       padding-block: 0.375rem;
-      border-bottom: 1px solid var(--line);
     }
     .file-entry {
       display: flex;
@@ -214,36 +214,26 @@
     .code, .exam { color: var(--muted); font: 0.75rem/1.4 var(--mono); }
     .file-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.5rem; margin-top: 0.18rem; }
     .exam { white-space: nowrap; }
+    .file-entry.full-row-link {
+      grid-column: 1 / -1;
+      justify-self: stretch;
+      padding-inline-end: 0;
+    }
+    .full-row-link .exam { margin-inline-start: auto; padding-inline-start: 0.25rem; }
     .credit {
       width: fit-content;
       padding: 0.125rem 0.5rem;
-      border: 1px solid var(--line);
+      border: 1px solid #705347;
       border-radius: 999px;
-      color: var(--muted);
+      color: var(--accent);
       font: 0.75rem/1.4 var(--mono);
       overflow-wrap: anywhere;
     }
-    .credit.maintainer { border-color: #705347; color: var(--accent); }
-    .publications {
-      display: grid;
-      grid-column: 1 / -1;
-      gap: 0.375rem;
-      margin-bottom: 0.375rem;
-    }
-    .publication {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-    }
-    .publication-credit {
-      display: flex;
-      padding: 0.375rem 0.625rem;
-      border-bottom: 1px solid var(--line);
-    }
-    .versions {
+    .analysis-actions {
       display: grid;
       grid-auto-flow: column;
       grid-auto-columns: minmax(0, 1fr);
+      border-top: 1px solid var(--line);
     }
     .publication-link {
       display: grid;
@@ -253,15 +243,9 @@
       font-size: 0.875rem;
       font-weight: 600;
     }
-    .standalone-link {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
-      padding-inline: 0.625rem;
-    }
-    .versions > .publication-link + .publication-link { border-inline-start: 1px solid var(--line); }
-    .publication-link:hover { background: var(--hover); }
-    .publication-link:hover .link-label {
+    .publication-link + .publication-link { border-inline-start: 1px solid var(--line); }
+    .publication-link:hover {
+      background: var(--hover);
       text-decoration: underline;
       text-underline-offset: 0.2em;
     }
@@ -357,13 +341,13 @@
       <noscript>
         <ul>
           <li><a href="sem-2026-21MAB302T-discrete-mathematics.html">Discrete Mathematics (21MAB302T) · SEM 2026</a> · @aryan-astra</li>
-          <li>Formal Language and Automata (21CSC301T) · SEM 2026
+          <li>Formal Language and Automata (21CSC301T) · SEM 2026 · @aryan-astra
             <ul>
-              <li><a href="sem-2026-21CSC301T-formal-language-and-automata--simplified.html">Simplified</a> · @aryan-astra</li>
-              <li><a href="sem-2026-21CSC301T-formal-language-and-automata--detailed.html">Detailed</a> · @aryan-astra</li>
-              <li><a href="sem-2026-21CSC301T-formal-language-automata.html">Open analysis</a> · @Toib765</li>
+              <li><a href="sem-2026-21CSC301T-formal-language-and-automata--simplified.html">Simplified</a></li>
+              <li><a href="sem-2026-21CSC301T-formal-language-and-automata--detailed.html">Detailed</a></li>
             </ul>
           </li>
+          <li><a href="sem-2026-21CSC301T-formal-language-automata.html">Formal Language and Automata (21CSC301T) · SEM 2026</a> · @Toib765</li>
         </ul>
       </noscript>
     </section>
@@ -371,19 +355,21 @@
 
   <template id="analysis-template">
     <li class="analysis">
-      <a class="file-entry" href="">
-        <svg class="file-icon" width="36" height="42" viewBox="0 0 36 42" aria-hidden="true" focusable="false">
-          <path class="file-sheet" d="M8 3h13l10 10v23a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z"/>
-          <path class="file-fold" d="M21 3v8a2 2 0 0 0 2 2h8Z"/>
-          <path class="file-code" d="m14 21-3 3 3 3m8-6 3 3-3 3m-2.6-8-2.8 10"/>
-        </svg>
-        <span class="file-details">
-          <span class="file-name"></span>
-          <span class="file-meta"><span class="code"></span></span>
-        </span>
-      </a>
-      <span class="exam"></span>
-      <div class="publications" hidden></div>
+      <div class="analysis-heading">
+        <a class="file-entry" href="">
+          <svg class="file-icon" width="36" height="42" viewBox="0 0 36 42" aria-hidden="true" focusable="false">
+            <path class="file-sheet" d="M8 3h13l10 10v23a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z"/>
+            <path class="file-fold" d="M21 3v8a2 2 0 0 0 2 2h8Z"/>
+            <path class="file-code" d="m14 21-3 3 3 3m8-6 3 3-3 3m-2.6-8-2.8 10"/>
+          </svg>
+          <span class="file-details">
+            <span class="file-name"></span>
+            <span class="file-meta"><span class="code"></span></span>
+          </span>
+        </a>
+        <span class="exam"></span>
+      </div>
+      <div class="analysis-actions" hidden></div>
     </li>
   </template>
 
@@ -399,8 +385,7 @@
     const files = JSON.parse(document.getElementById('catalog-files').textContent);
     const filenamePattern = /^(sem|ct)-(\d{4})-([a-z0-9]+)-([a-z0-9]+(?:-[a-z0-9]+)*)(?:--(simplified|detailed))?\.html$/i;
     const versionLabels = { simplified: 'Simplified', detailed: 'Detailed' };
-    const maintainer = 'aryan-astra';
-    const entries = new Map();
+    const courses = new Map();
     for (const [filename, author] of Object.entries(files)) {
       const match = filenamePattern.exec(filename);
       if (!match) continue;
@@ -408,27 +393,35 @@
       const [, examType, year, courseCode, slug, version] = match;
       const exam = examType.toUpperCase();
       const code = courseCode.toUpperCase();
-      const key = `${exam}-${year}-${code}`;
-      if (!entries.has(key)) {
-        const title = slug.toLowerCase().replaceAll('-', ' ')
+      const courseKey = `${exam}-${year}-${code}`;
+      const subject = slug.toLowerCase().replaceAll('-', ' ');
+      if (!courses.has(courseKey)) {
+        const title = subject
           .replace(/\b[a-z]/g, letter => letter.toUpperCase()).replace(/\bAnd\b/g, 'and');
         const examName = exam === 'SEM' ? 'semester exam' : 'cycle test';
         const keywords = `${title} ${code} ${year} ${exam} ${examName}`.toLowerCase();
-        entries.set(key, { year, title, code, exam, keywords, versionGroups: new Map(), standalone: [] });
+        courses.set(courseKey, { year, title, code, exam, keywords, versionGroups: new Map(), standalone: [] });
       }
-      const entry = entries.get(key);
-      entry.keywords += ` ${slug.toLowerCase().replaceAll('-', ' ')} ${author?.toLowerCase() ?? ''}`;
+      const course = courses.get(courseKey);
+      const keywords = `${course.keywords} ${subject} ${author?.toLowerCase() ?? ''}`;
       if (version) {
         const groupKey = JSON.stringify([slug.toLowerCase(), author]);
-        if (!entry.versionGroups.has(groupKey)) {
-          entry.versionGroups.set(groupKey, { author, files: new Map() });
+        if (!course.versionGroups.has(groupKey)) {
+          course.versionGroups.set(groupKey, { author, keywords, links: new Map() });
         }
-        entry.versionGroups.get(groupKey).files.set(version.toLowerCase(), filename);
+        course.versionGroups.get(groupKey).links.set(version.toLowerCase(), filename);
       } else {
-        entry.standalone.push({ filename, author });
+        course.standalone.push({ author, keywords, filename });
       }
     }
-    const catalog = [...entries.values()].sort((a, b) => b.year.localeCompare(a.year) || a.title.localeCompare(b.title));
+    const catalog = [...courses.values()]
+      .sort((a, b) => b.year.localeCompare(a.year) || a.title.localeCompare(b.title))
+      .flatMap(({ year, title, code, exam, versionGroups, standalone }) => {
+        const linkEntireRow = versionGroups.size + standalone.length > 1;
+        return [...versionGroups.values(), ...standalone].map(analysis => ({
+          ...analysis, year, title, code, exam, linkEntireRow,
+        }));
+      });
 
     const query = document.getElementById('query');
     const yearFilter = document.getElementById('year');
@@ -443,24 +436,13 @@
       yearFilter.add(new Option(year, year));
     }
 
-    function creditBadge(author) {
-      const badge = document.createElement('span');
-      badge.className = 'credit';
-      badge.classList.toggle('maintainer', author === maintainer);
-      badge.textContent = `@${author}`;
-      return badge;
-    }
-
-    function publicationLink(entry, filename, label, author) {
+    function publicationLink(entry, filename, label) {
       const link = document.createElement('a');
       link.className = 'publication-link';
       link.href = filename;
-      const credit = author ? ` by @${author}` : '';
+      const credit = entry.author ? ` by @${entry.author}` : '';
       link.setAttribute('aria-label', `${label}${credit} — ${entry.title} (${entry.code}), ${entry.exam} ${entry.year}`);
-      const caption = document.createElement('span');
-      caption.className = 'link-label';
-      caption.textContent = label;
-      link.append(caption);
+      link.textContent = label;
       return link;
     }
 
@@ -476,12 +458,21 @@
         const row = rowTemplate.content.cloneNode(true);
         row.querySelector('.file-name').textContent = entry.title;
         row.querySelector('.code').textContent = entry.code;
-        row.querySelector('.exam').textContent = `${entry.exam} ${entry.year}`;
+        const exam = row.querySelector('.exam');
+        exam.textContent = `${entry.exam} ${entry.year}`;
+        if (entry.author) {
+          const badge = document.createElement('span');
+          badge.className = 'credit';
+          badge.textContent = `@${entry.author}`;
+          row.querySelector('.file-meta').append(badge);
+        }
         const fileEntry = row.querySelector('.file-entry');
-        if (!entry.versionGroups.size && entry.standalone.length === 1) {
-          const [{ filename, author }] = entry.standalone;
-          fileEntry.href = filename;
-          if (author) row.querySelector('.file-meta').append(creditBadge(author));
+        if (entry.filename) {
+          fileEntry.href = entry.filename;
+          if (entry.linkEntireRow) {
+            fileEntry.classList.add('full-row-link');
+            fileEntry.append(exam);
+          }
           return row;
         }
 
@@ -490,30 +481,11 @@
         heading.append(...fileEntry.childNodes);
         fileEntry.replaceWith(heading);
 
-        const publications = row.querySelector('.publications');
-        publications.hidden = false;
-        for (const { author, files } of entry.versionGroups.values()) {
-          const publication = document.createElement('div');
-          publication.className = 'publication';
-          if (author) {
-            const credit = document.createElement('div');
-            credit.className = 'publication-credit';
-            credit.append(creditBadge(author));
-            publication.append(credit);
-          }
-          const versions = document.createElement('div');
-          versions.className = 'versions';
-          for (const [version, label] of Object.entries(versionLabels)) {
-            if (files.has(version)) versions.append(publicationLink(entry, files.get(version), label, author));
-          }
-          publication.append(versions);
-          publications.append(publication);
-        }
-        for (const { filename, author } of entry.standalone) {
-          const link = publicationLink(entry, filename, 'Open analysis', author);
-          link.classList.add('publication', 'standalone-link');
-          if (author) link.append(creditBadge(author));
-          publications.append(link);
+        const actions = row.querySelector('.analysis-actions');
+        actions.hidden = false;
+        for (const [version, label] of Object.entries(versionLabels)) {
+          const filename = entry.links.get(version);
+          if (filename) actions.append(publicationLink(entry, filename, label));
         }
         return row;
       }));

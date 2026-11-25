@@ -9,7 +9,7 @@ from shutil import copyfile
 ROOT = Path(__file__).resolve().parents[2]
 SITE_ASSETS = ('readme-html-foldout.png', 'favicon.png')
 CATALOG_TAG = '<script type="application/json" id="catalog-files">'
-VERSION_LABELS = {'simplified': 'Simplified', 'detailed': 'Detailed', None: 'Open analysis'}
+VERSION_LABELS = {'simplified': 'Simplified', 'detailed': 'Detailed'}
 PAPER_NAME = re.compile(
     r'(sem|ct)-(\d{4})-([a-z0-9]+)-([a-z0-9]+(?:-[a-z0-9]+)*)(?:--(simplified|detailed))?\.html',
     re.IGNORECASE | re.ASCII,
@@ -35,26 +35,33 @@ def build(output):
         key = (exam.upper(), year, code.upper())
         title = slug.replace('-', ' ').title().replace(' And ', ' and ')
         _, files = courses.setdefault(key, (title, []))
-        files.append((path.name, version.lower() if version else None))
+        files.append((path.name, slug.lower(), version.lower() if version else None))
         papers.append(path)
 
+    def credit_text(author):
+        return f' · @{escape(author)}' if author else ''
+
     def fallback_link(filename, label):
-        author = credits.get(filename)
-        credit = f' · @{escape(author)}' if author else ''
-        return f'<li><a href="{escape(filename)}">{escape(label)}</a>{credit}</li>'
+        return f'<a href="{escape(filename)}">{escape(label)}</a>'
 
     fallback_links = []
-    version_order = list(VERSION_LABELS)
     for (exam, year, code), (title, files) in courses.items():
         label = f'{title} ({code}) · {exam} {year}'
-        if len(files) == 1 and files[0][1] is None:
-            fallback_links.append(fallback_link(files[0][0], label))
-        else:
+        version_groups = {}
+        standalone = []
+        for filename, slug, version in files:
+            author = credits.get(filename)
+            if version:
+                version_groups.setdefault((slug, author), {})[version] = filename
+            else:
+                standalone.append(f'<li>{fallback_link(filename, label)}{credit_text(author)}</li>')
+        for (_, author), versions in version_groups.items():
             links = ''.join(
-                fallback_link(filename, VERSION_LABELS[version])
-                for filename, version in sorted(files, key=lambda record: version_order.index(record[1]))
+                f'<li>{fallback_link(versions[version], version_label)}</li>'
+                for version, version_label in VERSION_LABELS.items() if version in versions
             )
-            fallback_links.append(f'<li>{escape(label)}<ul>{links}</ul></li>')
+            fallback_links.append(f'<li>{escape(label)}{credit_text(author)}<ul>{links}</ul></li>')
+        fallback_links.extend(standalone)
 
     catalog = json.dumps({path.name: credits.get(path.name) for path in papers}, indent=2)
     index = replace_contents(index, CATALOG_TAG, '</script>', f'\n{catalog}\n  ')
