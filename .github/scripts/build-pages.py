@@ -7,7 +7,12 @@ from shutil import copyfile
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SITE_ASSETS = ('readme-html-foldout.png', 'favicon.png', 'srm-exam-library-share.png')
+SITE_ASSETS = (
+    'readme-html-foldout.png',
+    'favicon.png',
+    'srm-exam-library-share.png',
+    'srm-exam-library-share.jpg',
+)
 CATALOG_TAG = '<script type="application/json" id="catalog-files">'
 VERSION_LABELS = {'simplified': 'Simplified', 'detailed': 'Detailed'}
 PAPER_NAME = re.compile(
