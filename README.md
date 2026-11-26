@@ -3,7 +3,7 @@
 [![Browse the exam library](https://img.shields.io/badge/Exam_library-Browse_online-A85D49?logo=githubpages&logoColor=white)](https://aryan-astra.github.io/one-shot-html/)
 [![GitHub Pages deployment status](https://github.com/aryan-astra/one-shot-html/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/aryan-astra/one-shot-html/actions/workflows/pages.yml)
 
-Student-made question-paper analyses for SRM semester exams and cycle tests. Search the [exam library](https://aryan-astra.github.io/one-shot-html/) by subject, course code, year, or exam type.
+Student-made question-paper analyses and archives for SRM semester exams and cycle tests. Search the [exam library](https://aryan-astra.github.io/one-shot-html/) by subject, course code, year, or exam type.
 
 <img src="assets/readme-html-foldout.png" width="640" alt="Two students exploring a foldout HTML file with multiple-choice answers, highlighted questions, and a graph">
 
@@ -16,6 +16,10 @@ Student-made question-paper analyses for SRM semester exams and cycle tests. Sea
 | Formal Language and Automata (`21CSC301T`) | SEM 2026 | [@Toib765](https://github.com/Toib765) | [Analysis](https://aryan-astra.github.io/one-shot-html/sem-2026-21CSC301T-formal-language-automata.html) |
 
 Each view opens as a standalone HTML page. In the library, the two versions of an analysis appear side by side, and each contributor has their own course row.
+
+## Question archives
+
+- [Computer Networks (`21CSC302J`)](https://aryan-astra.github.io/one-shot-html/CN_Question_Archive.html) includes past semester questions, topic filters, paper scans, and worked examples.
 
 ## Contribute
 
