@@ -11,15 +11,12 @@ Student-made question-paper analyses and archives for SRM semester exams and cyc
 
 | Course | Exam | Contributor | Views |
 | --- | --- | --- | --- |
+| Computer Networks (`21CSC302J`) | SEM 2026 | [@aryan-astra](https://github.com/aryan-astra) | [Question archive](https://aryan-astra.github.io/one-shot-html/sem-2026-21CSC302J-computer-networks.html) |
 | Discrete Mathematics (`21MAB302T`) | SEM 2026 | [@aryan-astra](https://github.com/aryan-astra) | [Analysis](https://aryan-astra.github.io/one-shot-html/sem-2026-21MAB302T-discrete-mathematics.html) |
 | Formal Language and Automata (`21CSC301T`) | SEM 2026 | [@aryan-astra](https://github.com/aryan-astra) | [Simplified](https://aryan-astra.github.io/one-shot-html/sem-2026-21CSC301T-formal-language-and-automata--simplified.html) · [Detailed](https://aryan-astra.github.io/one-shot-html/sem-2026-21CSC301T-formal-language-and-automata--detailed.html) |
 | Formal Language and Automata (`21CSC301T`) | SEM 2026 | [@Toib765](https://github.com/Toib765) | [Analysis](https://aryan-astra.github.io/one-shot-html/sem-2026-21CSC301T-formal-language-automata.html) |
 
 Each view opens as a standalone HTML page. In the library, the two versions of an analysis appear side by side, and each contributor has their own course row.
-
-## Question archives
-
-- [Computer Networks (`21CSC302J`)](https://aryan-astra.github.io/one-shot-html/CN_Question_Archive.html) includes past semester questions, topic filters, paper scans, and worked examples.
 
 ## Contribute
 

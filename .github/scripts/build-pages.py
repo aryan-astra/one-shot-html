@@ -7,7 +7,6 @@ from shutil import copyfile
 
 
 ROOT = Path(__file__).resolve().parents[2]
-QUESTION_ARCHIVE = 'CN_Question_Archive.html'
 SITE_ASSETS = (
     'readme-html-foldout.png',
     'favicon.png',
@@ -80,7 +79,6 @@ def build(output):
         copyfile(ROOT / 'assets' / name, output / 'assets' / name)
     for paper in papers:
         copyfile(paper, output / paper.name)
-    copyfile(ROOT / QUESTION_ARCHIVE, output / QUESTION_ARCHIVE)
     (output / 'index.html').write_text(index, encoding='utf-8')
     print(f'Prepared {len(papers)} analysis file(s) for GitHub Pages.')
 
